@@ -1,0 +1,13 @@
+with-expecter: true
+
+# For now, default to generating into test files, we don't
+# currently expect needing sharing mocks between packages.
+dir: "{{.InterfaceDir}}"
+filename: "mock_{{.InterfaceName | lower }}_test.go"
+inpackage: true
+
+packages:
+  github.com/curioswitch/go-usegcp/middleware/firebaseauth:
+    interfaces:
+      firebaseAuth:
+
