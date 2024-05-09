@@ -6,6 +6,8 @@ import (
 	"strings"
 
 	"firebase.google.com/go/v4/auth"
+
+	"github.com/curioswitch/go-usegcp/middleware/firebaseauth/internal/contextholder"
 )
 
 // NewMiddleware returns an http.Handler middleware that authenticates requests
@@ -53,10 +55,14 @@ func (m *handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	req = req.WithContext(context.WithValue(req.Context(), firebaseUserContextKey, &firebaseUserHolder{
-		user:  decoded,
-		token: token,
-	}))
+	req = req.WithContext(
+		context.WithValue(
+			req.Context(),
+			contextholder.FirebaseTokenContextKey,
+			&contextholder.FirebaseTokenHolder{
+				Token:    decoded,
+				RawToken: token,
+			}))
 
 	m.next.ServeHTTP(w, req)
 }
