@@ -17,14 +17,20 @@ func TestMiddleware(t *testing.T) {
 		name          string
 		authorization string
 
-		status int
-		body   string
+		status     int
+		body       string
+		nextCalled bool
+		tokenUID   string
+		rawToken   string
 	}{
 		{
 			name:          "success",
 			authorization: "Bearer valid-token",
 			status:        http.StatusOK,
 			body:          "success",
+			nextCalled:    true,
+			tokenUID:      "userid",
+			rawToken:      "valid-token",
 		},
 		{
 			name:   "missing header",
@@ -45,15 +51,21 @@ func TestMiddleware(t *testing.T) {
 		},
 	}
 
-	next := http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write([]byte("success"))
-	})
-
 	for _, tc := range tests {
 		tc := tc
 
 		t.Run(tc.name, func(t *testing.T) {
+			nextCalled := false
+			nextCtx := context.Background()
+
+			next := http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+				nextCalled = true
+				nextCtx = req.Context()
+
+				w.WriteHeader(http.StatusOK)
+				_, _ = w.Write([]byte("success"))
+			})
+
 			fbAuth := NewMockfirebaseAuth(t)
 
 			fbAuth.EXPECT().
@@ -61,7 +73,7 @@ func TestMiddleware(t *testing.T) {
 				RunAndReturn(func(_ context.Context, s string) (*auth.Token, error) {
 					switch {
 					case s == "valid-token":
-						return &auth.Token{UID: "userid"}, nil
+						return &auth.Token{UID: tc.tokenUID}, nil
 					default:
 						return nil, errors.New("invalid signature")
 					}
@@ -79,6 +91,19 @@ func TestMiddleware(t *testing.T) {
 
 			require.Equal(t, tc.status, res.Code)
 			require.Equal(t, tc.body, res.Body.String())
+			require.Equal(t, tc.nextCalled, nextCalled)
+
+			if tc.tokenUID != "" {
+				require.Equal(t, tc.tokenUID, TokenFromContext(nextCtx).UID)
+			} else {
+				require.Nil(t, TokenFromContext(nextCtx))
+			}
+
+			if tc.rawToken != "" {
+				require.Equal(t, tc.rawToken, RawTokenFromContext(nextCtx))
+			} else {
+				require.Empty(t, RawTokenFromContext(nextCtx))
+			}
 		})
 	}
 }
