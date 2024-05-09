@@ -34,19 +34,19 @@ func TestMiddleware(t *testing.T) {
 		},
 		{
 			name:   "missing header",
-			status: http.StatusUnauthorized,
+			status: http.StatusForbidden,
 			body:   "missing authorization header\n",
 		},
 		{
 			name:          "malformed header",
 			authorization: "valid-token",
-			status:        http.StatusUnauthorized,
+			status:        http.StatusForbidden,
 			body:          "malformed authorization header\n",
 		},
 		{
 			name:          "invalid",
 			authorization: "Bearer invalid-token",
-			status:        http.StatusUnauthorized,
+			status:        http.StatusForbidden,
 			body:          "invalid token\n",
 		},
 	}
