@@ -1,0 +1,51 @@
+name: Build OTel Collector
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - build/version-otel-collector.txt
+      - build/otel/**
+      - .github/workflows/otel-collector.yaml
+  pull_request:
+    paths:
+      - build/version-otel-collector.txt
+      - build/otel/**
+      - .github/workflows/otel-collector.yaml
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  actions: read
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.work
+          cache-dependency-path: |
+            build/go.sum
+            build/versions.go
+
+      - id: docker-meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/curioswitch/go-usegcp/otel-collector
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=sha,format=long
+            type=raw,value=latest,enable={{is_default_branch}}
+          sep-tags: ","
+          sep-labels: ","
+
+      - name: build otel-collector
+        run: go run ./build -v --docker-tags ${{ steps.docker-meta.outputs.tags }} ${{ github.event_name != 'pull_request' && '--docker-push' || '' }} otel-collector
