@@ -49,10 +49,10 @@ func NewHandler(w io.Writer, opts ...Option) slog.Handler {
 
 	delegate := slog.NewJSONHandler(w, &conf.options)
 
-	creds, _ := google.FindDefaultCredentials(context.Background())
+	creds, err := google.FindDefaultCredentials(context.Background())
 	tracePrefix := "projects/unknown/traces/"
-	if p := creds.ProjectID; p != "" {
-		tracePrefix = fmt.Sprintf("projects/%s/traces/", p)
+	if err == nil && creds.ProjectID != "" {
+		tracePrefix = fmt.Sprintf("projects/%s/traces/", creds.ProjectID)
 	}
 
 	return otelLogHandler{
