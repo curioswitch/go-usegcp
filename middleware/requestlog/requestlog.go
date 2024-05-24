@@ -10,11 +10,11 @@ import (
 	"github.com/felixge/httpsnoop"
 )
 
-// NewMiddlware returns an [http.Handler] middleware that logs requests in
+// NewMiddleware returns an [http.Handler] middleware that logs requests in
 // GCP structured format using [slog]. With [slog.JSONHandler] used as the
 // handler, logs will be rendered on the GCP console with rich information
 // about the HTTP request.
-func NewMiddlware(opts ...Option) func(http.Handler) http.Handler {
+func NewMiddleware(opts ...Option) func(http.Handler) http.Handler {
 	var conf config
 	for _, o := range opts {
 		o.apply(&conf)
