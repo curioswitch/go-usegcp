@@ -9,10 +9,10 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-// WrapHandler wraps a [slog.Handler], formatting default fields to follow
-// GCP's format and adding trace context attributes to every logged record.
-// This should be used with [slog.JSONHandler] to allow proper rendering of
-// log messages and for traces and logs to be linked together in the GCP console.
+// NewHandler returns a new [slog.Handler], outputting in JSON with keys
+// formatted to follow GCP's format for proper rendering in the console.
+// If an OpenTelemetry span is active, its context IDs will also be recorded
+// with GCP's format, allowing traces and logs to be linked in the console.
 func NewHandler(w io.Writer, opts ...Option) slog.Handler {
 	var conf config
 	for _, o := range opts {
