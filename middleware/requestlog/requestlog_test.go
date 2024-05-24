@@ -167,7 +167,7 @@ func TestMiddleware(t *testing.T) {
 			logger := slog.New(slog.NewJSONHandler(&output, &slog.HandlerOptions{}))
 			w := httptest.NewRecorder()
 
-			mw := NewMiddlware(Logger(logger))
+			mw := NewMiddleware(Logger(logger))
 			h := mw(tc.next)
 
 			if tc.panicErr != nil {

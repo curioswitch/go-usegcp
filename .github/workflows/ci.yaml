@@ -27,5 +27,11 @@ jobs:
           go-version-file: go.work
           cache-dependency-path: "**/go.sum"
 
-      - name: run checks
-        run: go run build check
+      - name: run lints
+        # We don't have OS-specific code so would be completely repetitive to run
+        # lint on all of them.
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: go run build lint
+
+      - name: run tests
+        run: go run build test
