@@ -85,7 +85,7 @@ func TestNewHandler(t *testing.T) {
 			logged: logRecord{
 				Message:  "normal log",
 				Severity: "INFO",
-				TraceID:  "01020304010203040102030401020304",
+				TraceID:  "projects/unknown/traces/01020304010203040102030401020304",
 				SpanID:   "0102030401020304",
 				Sampled:  true,
 				Animal:   "bear",
@@ -105,7 +105,7 @@ func TestNewHandler(t *testing.T) {
 			logged: logRecord{
 				Message:  "error log",
 				Severity: "ERROR",
-				TraceID:  "01020304010203040102030401020304",
+				TraceID:  "projects/unknown/traces/01020304010203040102030401020304",
 				SpanID:   "0102030401020304",
 				Sampled:  true,
 				Animal:   "bear",

@@ -2,11 +2,13 @@ package gcpslog
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"log/slog"
 	"strconv"
 
 	"go.opentelemetry.io/otel/trace"
+	"golang.org/x/oauth2/google"
 )
 
 // NewHandler returns a new [slog.Handler], outputting in JSON with keys
@@ -47,13 +49,21 @@ func NewHandler(w io.Writer, opts ...Option) slog.Handler {
 
 	delegate := slog.NewJSONHandler(w, &conf.options)
 
+	creds, err := google.FindDefaultCredentials(context.Background())
+	tracePrefix := "projects/unknown/traces/"
+	if err == nil && creds.ProjectID != "" {
+		tracePrefix = fmt.Sprintf("projects/%s/traces/", creds.ProjectID)
+	}
+
 	return otelLogHandler{
-		delegate: delegate,
+		delegate:    delegate,
+		tracePrefix: tracePrefix,
 	}
 }
 
 type otelLogHandler struct {
-	delegate slog.Handler
+	delegate    slog.Handler
+	tracePrefix string
 }
 
 var _ slog.Handler = otelLogHandler{}
@@ -69,7 +79,7 @@ func (h otelLogHandler) Handle(ctx context.Context, r slog.Record) error {
 	// a user would set them manually.
 	if sctx := trace.SpanContextFromContext(ctx); sctx.IsValid() {
 		r.AddAttrs(
-			slog.String("logging.googleapis.com/trace", sctx.TraceID().String()),
+			slog.String("logging.googleapis.com/trace", h.tracePrefix+sctx.TraceID().String()),
 			slog.String("logging.googleapis.com/spanId", sctx.SpanID().String()),
 			slog.Bool("logging.googleapis.com/trace_sampled", sctx.IsSampled()),
 		)
