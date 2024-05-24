@@ -86,6 +86,7 @@ func main() {
 				cmd.Exec(a, indexCmd)
 
 				for _, tag := range tags[1:] {
+					_, tag, _ := strings.Cut(tag, ":")
 					cmd.Exec(a, fmt.Sprintf("go run github.com/google/go-containerregistry/cmd/crane@%s tag %s %s", verCrane, baseTag, tag))
 				}
 			}
