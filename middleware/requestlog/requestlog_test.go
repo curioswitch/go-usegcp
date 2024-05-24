@@ -186,7 +186,9 @@ func TestMiddleware(t *testing.T) {
 			require.True(t, strings.HasSuffix(latencyStr, "s"))
 			latency, err := strconv.ParseFloat(strings.TrimSuffix(latencyStr, "s"), 64)
 			require.NoError(t, err)
-			require.Greater(t, latency, 0.0)
+			// Generally would use Greater but with low precision clock like on Windows,
+			// can be equal and it's better than slowing down the test with a sleep.
+			require.GreaterOrEqual(t, latency, 0.0)
 			rec.HTTPRequest.Latency = ""
 
 			if tc.record.StackTrace == "" {
