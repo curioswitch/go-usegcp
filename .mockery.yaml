@@ -10,4 +10,3 @@ packages:
   github.com/curioswitch/go-usegcp/middleware/firebaseauth:
     interfaces:
       firebaseAuth:
-
