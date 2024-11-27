@@ -11,4 +11,4 @@ middleware always uses `http.Handler` and logging always uses `slog`.
 ## Packages
 
 - [firebaseauth](./middleware/firebaseauth) - an HTTP middleware to verify and decode
-Firebase ID tokens.
+  Firebase ID tokens.

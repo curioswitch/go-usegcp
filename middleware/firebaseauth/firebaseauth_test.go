@@ -60,7 +60,7 @@ func TestMiddleware(t *testing.T) {
 
 			next := http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 				nextCalled = true
-				nextCtx = req.Context()
+				nextCtx = req.Context() //nolint:fatcontext // not creating a new context
 
 				w.WriteHeader(http.StatusOK)
 				_, _ = w.Write([]byte("success"))

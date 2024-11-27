@@ -23,9 +23,7 @@ var otelFS embed.FS
 var verOTelCollectorContrib string
 
 func main() {
-	build.DefineTasks(
-		build.LocalPackagePrefix("github.com/curioswitch/go-usegcp"),
-	)
+	build.DefineTasks()
 
 	dockerTags := flag.String("docker-tags", "ghcr.io/curioswitch/go-usegcp/otel-collector:dev", "Tags to add to built docker image.")
 	dockerPush := flag.Bool("docker-push", false, "Whether to push built docker images")
