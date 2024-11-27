@@ -1,13 +1,14 @@
 module github.com/curioswitch/go-usegcp
 
 go 1.21
+toolchain go1.22.5
 
 require (
-	firebase.google.com/go/v4 v4.14.0
+	firebase.google.com/go/v4 v4.15.0
 	github.com/felixge/httpsnoop v1.0.4
-	github.com/stretchr/testify v1.9.0
-	go.opentelemetry.io/otel/trace v1.28.0
-	golang.org/x/oauth2 v0.20.0
+	github.com/stretchr/testify v1.10.0
+	go.opentelemetry.io/otel/trace v1.32.0
+	golang.org/x/oauth2 v0.24.0
 )
 
 require (
@@ -28,8 +29,8 @@ require (
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.49.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.49.0 // indirect
-	go.opentelemetry.io/otel v1.28.0 // indirect
-	go.opentelemetry.io/otel/metric v1.28.0 // indirect
+	go.opentelemetry.io/otel v1.32.0 // indirect
+	go.opentelemetry.io/otel/metric v1.32.0 // indirect
 	golang.org/x/crypto v0.23.0 // indirect
 	golang.org/x/net v0.25.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
