@@ -5,7 +5,7 @@ go 1.22
 toolchain go1.22.9
 
 require (
-	firebase.google.com/go/v4 v4.15.0
+	firebase.google.com/go/v4 v4.15.1
 	github.com/felixge/httpsnoop v1.0.4
 	github.com/stretchr/testify v1.10.0
 	go.opentelemetry.io/otel/trace v1.32.0
