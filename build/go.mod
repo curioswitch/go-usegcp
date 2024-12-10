@@ -3,7 +3,7 @@ module build
 go 1.22
 
 require (
-	github.com/curioswitch/go-build v0.0.0-20241106020945-62c4e7f292ca
+	github.com/curioswitch/go-build v0.1.0
 	github.com/goyek/goyek/v2 v2.2.0
 	github.com/goyek/x v0.2.0
 )
