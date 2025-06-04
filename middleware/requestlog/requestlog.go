@@ -35,7 +35,7 @@ type handler struct {
 
 // ServeHTTP implements http.Handler.
 func (h *handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	var metrics httpsnoop.Metrics
+	metrics := httpsnoop.Metrics{Code: http.StatusOK}
 
 	defer func() {
 		var stack []byte
@@ -86,9 +86,9 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		l.InfoContext(req.Context(), "Server Request", logArgs...)
 	}()
 
-	metrics = httpsnoop.CaptureMetrics(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
-		h.next.ServeHTTP(w, req)
-	}), w, req)
+	metrics.CaptureMetrics(w, func(ww http.ResponseWriter) {
+		h.next.ServeHTTP(ww, req)
+	})
 }
 
 // Cap stack trace recording to 4KB.
