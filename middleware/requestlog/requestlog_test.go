@@ -28,6 +28,9 @@ type gcpRequest struct {
 type gcpRecord struct {
 	HTTPRequest *gcpRequest `json:"httpRequest,omitempty"`
 	StackTrace  string      `json:"stack_trace,omitempty"`
+
+	// Extra attributes for testing.
+	Animal string `json:"animal,omitempty"`
 }
 
 func TestMiddleware(t *testing.T) {
@@ -97,6 +100,26 @@ func TestMiddleware(t *testing.T) {
 					RemoteIP:      "192.0.2.1:1234",
 					ResponseSize:  4,
 				},
+			},
+		},
+		{
+			name: "extra attrs",
+			req:  httptest.NewRequest(http.MethodGet, "/", nil),
+			next: http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+				w.WriteHeader(http.StatusOK)
+				AddExtraAttr(req.Context(), slog.String("animal", "bear"))
+			}),
+
+			record: &gcpRecord{
+				HTTPRequest: &gcpRequest{
+					RequestMethod: http.MethodGet,
+					RequestURL:    "/",
+					Protocol:      "HTTP/1.1",
+					Status:        http.StatusOK,
+					RemoteIP:      "192.0.2.1:1234",
+					ResponseSize:  0,
+				},
+				Animal: "bear",
 			},
 		},
 		{
