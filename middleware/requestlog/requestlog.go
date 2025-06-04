@@ -35,61 +35,60 @@ type handler struct {
 
 // ServeHTTP implements http.Handler.
 func (h *handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	var stack []byte
-	var servePanic any
+	var metrics httpsnoop.Metrics
 
-	handler := http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
-		defer func() {
-			if err := recover(); err != nil {
-				servePanic = err
-			}
-		}()
+	defer func() {
+		var stack []byte
+		var servePanic any
+		if err := recover(); err != nil {
+			servePanic = err
+			defer panic(servePanic)
+
+			pooled := stacks.Get().(*[]byte)
+			defer stacks.Put(pooled)
+			n := runtime.Stack(*pooled, false)
+			stack = (*pooled)[:n]
+		}
+
+		reqAttrs := []any{
+			slog.String("requestMethod", req.Method),
+			slog.String("requestUrl", req.URL.String()),
+			slog.String("protocol", req.Proto),
+			slog.String("remoteIp", req.RemoteAddr),
+			slog.Int64("responseSize", metrics.Written),
+			slog.String("latency", fmt.Sprintf("%.9fs", metrics.Duration.Seconds())),
+		}
+		if ua := req.Header.Get("User-Agent"); ua != "" {
+			reqAttrs = append(reqAttrs, slog.String("userAgent", ua))
+		}
+		if servePanic != nil {
+			// It is possible for a handler to flush a different status code before
+			// panicking, but almost all cases will still cause the client side to
+			// treat the response as an unknown error and the request is actually an
+			// error. We go ahead and always use 500 for a panic. This is suspicious
+			// but seems better in practice.
+			reqAttrs = append(reqAttrs, slog.Int("status", 500))
+		} else {
+			reqAttrs = append(reqAttrs, slog.Int("status", metrics.Code))
+		}
+
+		logArgs := []any{
+			slog.Group("httpRequest", reqAttrs...),
+		}
+		if stack != nil {
+			logArgs = append(logArgs, slog.String("stack_trace", string(stack)))
+		}
+
+		l := h.logger
+		if l == nil {
+			l = slog.Default()
+		}
+		l.InfoContext(req.Context(), "Server Request", logArgs...)
+	}()
+
+	metrics = httpsnoop.CaptureMetrics(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		h.next.ServeHTTP(w, req)
-	})
-	metrics := httpsnoop.CaptureMetrics(handler, w, req)
-
-	if servePanic != nil {
-		pooled := stacks.Get().(*[]byte)
-		defer stacks.Put(pooled)
-		n := runtime.Stack(*pooled, false)
-		stack = (*pooled)[:n]
-		defer panic(servePanic)
-	}
-
-	reqAttrs := []any{
-		slog.String("requestMethod", req.Method),
-		slog.String("requestUrl", req.URL.String()),
-		slog.String("protocol", req.Proto),
-		slog.String("remoteIp", req.RemoteAddr),
-		slog.Int64("responseSize", metrics.Written),
-		slog.String("latency", fmt.Sprintf("%.9fs", metrics.Duration.Seconds())),
-	}
-	if ua := req.Header.Get("User-Agent"); ua != "" {
-		reqAttrs = append(reqAttrs, slog.String("userAgent", ua))
-	}
-	if servePanic != nil {
-		// It is possible for a handler to flush a different status code before
-		// panicking, but almost all cases will still cause the client side to
-		// treat the response as an unknown error and the request is actually an
-		// error. We go ahead and always use 500 for a panic. This is suspicious
-		// but seems better in practice.
-		reqAttrs = append(reqAttrs, slog.Int("status", 500))
-	} else {
-		reqAttrs = append(reqAttrs, slog.Int("status", metrics.Code))
-	}
-
-	logArgs := []any{
-		slog.Group("httpRequest", reqAttrs...),
-	}
-	if stack != nil {
-		logArgs = append(logArgs, slog.String("stack_trace", string(stack)))
-	}
-
-	l := h.logger
-	if l == nil {
-		l = slog.Default()
-	}
-	l.InfoContext(req.Context(), "Server Request", logArgs...)
+	}), w, req)
 }
 
 // Cap stack trace recording to 4KB.
