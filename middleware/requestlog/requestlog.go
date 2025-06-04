@@ -1,6 +1,7 @@
 package requestlog
 
 import (
+	"context"
 	"fmt"
 	"log/slog"
 	"net/http"
@@ -37,7 +38,10 @@ type handler struct {
 func (h *handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	metrics := httpsnoop.Metrics{Code: http.StatusOK}
 
-	defer func() {
+	var extraAttrs []any
+	ctx := context.WithValue(req.Context(), extraAttrsContextKey, &extraAttrs)
+	req = req.WithContext(ctx)
+	defer func(ctx context.Context) {
 		var stack []byte
 		var servePanic any
 		if err := recover(); err != nil {
@@ -72,9 +76,9 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			reqAttrs = append(reqAttrs, slog.Int("status", metrics.Code))
 		}
 
-		logArgs := []any{
+		logArgs := append([]any{
 			slog.Group("httpRequest", reqAttrs...),
-		}
+		}, extraAttrs...)
 		if stack != nil {
 			logArgs = append(logArgs, slog.String("stack_trace", string(stack)))
 		}
@@ -83,8 +87,8 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		if l == nil {
 			l = slog.Default()
 		}
-		l.InfoContext(req.Context(), "Server Request", logArgs...)
-	}()
+		l.InfoContext(ctx, "Server Request", logArgs...)
+	}(ctx)
 
 	metrics.CaptureMetrics(w, func(ww http.ResponseWriter) {
 		h.next.ServeHTTP(ww, req)
@@ -118,4 +122,17 @@ type loggerOption struct {
 
 func (o *loggerOption) apply(conf *config) {
 	conf.logger = o.logger
+}
+
+type extraAttrsContextKeyType struct{}
+
+var extraAttrsContextKey = extraAttrsContextKeyType{}
+
+// AddExtraAttr adds an extra [slog.Attr] record with the request log for the
+// given context. If the context does not originate from the requestlog middleware,
+// it is ignored.
+func AddExtraAttr(ctx context.Context, attr slog.Attr) {
+	if attrs, ok := ctx.Value(extraAttrsContextKey).(*[]any); ok {
+		*attrs = append(*attrs, attr)
+	}
 }
