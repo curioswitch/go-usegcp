@@ -31,12 +31,13 @@ func NewHandler(w io.Writer, opts ...Option) slog.Handler {
 			case slog.TimeKey:
 				return slog.Attr{Key: "timestamp", Value: a.Value}
 			case slog.SourceKey:
-				val := a.Value.Any().(*slog.Source)
-				return slog.Group("logging.googleapis.com/sourceLocation",
-					slog.String("file", val.File),
-					slog.String("line", strconv.Itoa(val.Line)),
-					slog.String("function", val.Function),
-				)
+				if val, ok := a.Value.Any().(*slog.Source); ok {
+					return slog.Group("logging.googleapis.com/sourceLocation",
+						slog.String("file", val.File),
+						slog.String("line", strconv.Itoa(val.Line)),
+						slog.String("function", val.Function),
+					)
+				}
 			}
 		}
 
@@ -85,7 +86,7 @@ func (h otelLogHandler) Handle(ctx context.Context, r slog.Record) error {
 		)
 	}
 
-	return h.delegate.Handle(ctx, r)
+	return h.delegate.Handle(ctx, r) //nolint:wrapcheck // just middleware
 }
 
 // WithAttrs implements slog.Handler.
