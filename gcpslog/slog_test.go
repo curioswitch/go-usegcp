@@ -50,7 +50,7 @@ func TestNewHandler(t *testing.T) {
 	}{
 		{
 			name:    "info no span",
-			ctx:     context.Background(),
+			ctx:     t.Context(),
 			message: "normal log",
 			level:   slog.LevelInfo,
 
@@ -62,7 +62,7 @@ func TestNewHandler(t *testing.T) {
 		},
 		{
 			name:    "error no span",
-			ctx:     context.Background(),
+			ctx:     t.Context(),
 			message: "bad log",
 			level:   slog.LevelError,
 
@@ -74,7 +74,7 @@ func TestNewHandler(t *testing.T) {
 		},
 		{
 			name: "info with span",
-			ctx: trace.ContextWithSpanContext(context.Background(), trace.NewSpanContext(trace.SpanContextConfig{
+			ctx: trace.ContextWithSpanContext(t.Context(), trace.NewSpanContext(trace.SpanContextConfig{
 				TraceID:    traceID,
 				SpanID:     spanID,
 				TraceFlags: trace.FlagsSampled,
@@ -93,7 +93,7 @@ func TestNewHandler(t *testing.T) {
 		},
 		{
 			name: "error with span and source",
-			ctx: trace.ContextWithSpanContext(context.Background(), trace.NewSpanContext(trace.SpanContextConfig{
+			ctx: trace.ContextWithSpanContext(t.Context(), trace.NewSpanContext(trace.SpanContextConfig{
 				TraceID:    traceID,
 				SpanID:     spanID,
 				TraceFlags: trace.FlagsSampled,
@@ -118,7 +118,7 @@ func TestNewHandler(t *testing.T) {
 		},
 		{
 			name:    "info replace attr",
-			ctx:     context.Background(),
+			ctx:     t.Context(),
 			message: "normal log",
 			level:   slog.LevelInfo,
 			replaceAttr: func(groups []string, a slog.Attr) slog.Attr {
@@ -138,8 +138,6 @@ func TestNewHandler(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		tc := tc
-
 		t.Run(tc.name, func(t *testing.T) {
 			var out bytes.Buffer
 

@@ -52,11 +52,9 @@ func TestMiddleware(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		tc := tc
-
 		t.Run(tc.name, func(t *testing.T) {
 			nextCalled := false
-			nextCtx := context.Background()
+			nextCtx := t.Context()
 
 			next := http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 				nextCalled = true
@@ -71,8 +69,8 @@ func TestMiddleware(t *testing.T) {
 			fbAuth.EXPECT().
 				VerifyIDToken(mock.Anything, mock.Anything).
 				RunAndReturn(func(_ context.Context, s string) (*auth.Token, error) {
-					switch {
-					case s == "valid-token":
+					switch s {
+					case "valid-token":
 						return &auth.Token{UID: tc.tokenUID}, nil
 					default:
 						return nil, errors.New("invalid signature")

@@ -48,7 +48,7 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			servePanic = err
 			defer panic(servePanic)
 
-			pooled := stacks.Get().(*[]byte)
+			pooled := stacks.Get().(*[]byte) //nolint:forcetypeassert // pool type well defined
 			defer stacks.Put(pooled)
 			n := runtime.Stack(*pooled, false)
 			stack = (*pooled)[:n]
