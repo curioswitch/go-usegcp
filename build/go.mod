@@ -30,7 +30,7 @@ require (
 	github.com/Antonboom/nilnil v1.1.0 // indirect
 	github.com/Antonboom/testifylint v1.6.1 // indirect
 	github.com/BurntSushi/toml v1.5.0 // indirect
-	github.com/Djarvur/go-err113 v0.0.0-20210108212216-aea10b59be24 // indirect
+	github.com/Djarvur/go-err113 v0.1.0 // indirect
 	github.com/GaijinEntertainment/go-exhaustruct/v3 v3.3.1 // indirect
 	github.com/Masterminds/semver/v3 v3.3.1 // indirect
 	github.com/OpenPeeDeeP/depguard/v2 v2.2.1 // indirect
@@ -215,7 +215,7 @@ require (
 	github.com/urfave/cli/v3 v3.3.8 // indirect
 	github.com/uudashr/gocognit v1.2.0 // indirect
 	github.com/uudashr/iface v1.4.0 // indirect
-	github.com/wasilibs/go-prettier/v3 v3.6.0 // indirect
+	github.com/wasilibs/go-prettier/v3 v3.6.1 // indirect
 	github.com/wasilibs/go-shellcheck v0.10.0 // indirect
 	github.com/wasilibs/go-yamllint v1.35.1 // indirect
 	github.com/xanzy/go-gitlab v0.115.0 // indirect
