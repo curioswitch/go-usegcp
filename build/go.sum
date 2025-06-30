@@ -57,8 +57,8 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/BurntSushi/toml v1.5.0 h1:W5quZX/G/csjUnuI8SUYlsHs9M38FC7znL0lIO+DvMg=
 github.com/BurntSushi/toml v1.5.0/go.mod h1:ukJfTF/6rtPPRCnwkur4qwRxa8vTRFBF0uk2lLoLwho=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
-github.com/Djarvur/go-err113 v0.0.0-20210108212216-aea10b59be24 h1:sHglBQTwgx+rWPdisA5ynNEsoARbiCBOyGcJM4/OzsM=
-github.com/Djarvur/go-err113 v0.0.0-20210108212216-aea10b59be24/go.mod h1:4UJr5HIiMZrwgkSPdsjy2uOQExX/WEILpIrO9UPGuXs=
+github.com/Djarvur/go-err113 v0.1.0 h1:uCRZZOdMQ0TZPHYTdYpoC0bLYJKPEHPUJ8MeAa51lNU=
+github.com/Djarvur/go-err113 v0.1.0/go.mod h1:4UJr5HIiMZrwgkSPdsjy2uOQExX/WEILpIrO9UPGuXs=
 github.com/GaijinEntertainment/go-exhaustruct/v3 v3.3.1 h1:Sz1JIXEcSfhz7fUi7xHnhpIE0thVASYjvosApmHuD2k=
 github.com/GaijinEntertainment/go-exhaustruct/v3 v3.3.1/go.mod h1:n/LSCXNuIYqVfBlVXyHfMQkZDdp1/mmxfSjADd3z1Zg=
 github.com/Masterminds/semver/v3 v3.3.1 h1:QtNSWtVZ3nBfk8mAOu/B6v7FMJ+NHTIgUPi7rj+4nv4=
@@ -579,8 +579,8 @@ github.com/uudashr/gocognit v1.2.0 h1:3BU9aMr1xbhPlvJLSydKwdLN3tEUUrzPSSM8S4hDYR
 github.com/uudashr/gocognit v1.2.0/go.mod h1:k/DdKPI6XBZO1q7HgoV2juESI2/Ofj9AcHPZhBBdrTU=
 github.com/uudashr/iface v1.4.0 h1:ImZ+1oEJPXvjap7nK0md7gA9RRH7PMp4vliaLkJ2+cg=
 github.com/uudashr/iface v1.4.0/go.mod h1:i/H4cfRMPe0izticV8Yz0g6/zcsh5xXlvthrdh1kqcY=
-github.com/wasilibs/go-prettier/v3 v3.6.0 h1:PFMguyOOAtOnYdDjxyKyLIhwERbEzQMgRXAQPq6Tf4M=
-github.com/wasilibs/go-prettier/v3 v3.6.0/go.mod h1:Rx8tcnzu/osaN6wgej4R1FM6yKauF1XfK+CCnolO5tk=
+github.com/wasilibs/go-prettier/v3 v3.6.1 h1:L7XZYUIPlK8rQglxrDTqdH5TOFdHP2aGyKv8NfTollk=
+github.com/wasilibs/go-prettier/v3 v3.6.1/go.mod h1:Rx8tcnzu/osaN6wgej4R1FM6yKauF1XfK+CCnolO5tk=
 github.com/wasilibs/go-shellcheck v0.10.0 h1:zO8NYkHMLfwO3m3KBinN4Sr4DlXsBy/B2WEgGvljFaw=
 github.com/wasilibs/go-shellcheck v0.10.0/go.mod h1:twX/Dj9x4700GZHxIAr/Jdw6zV+S/qmtst/bSJEWfy8=
 github.com/wasilibs/go-yamllint v1.35.1 h1:r4zw1XYN3EgqLH3OIkj2cm1OsEMCP5TXIG+NP0LSF+s=
