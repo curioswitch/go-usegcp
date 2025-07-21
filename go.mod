@@ -1,6 +1,6 @@
 module github.com/curioswitch/go-usegcp
 
-go 1.24.4
+go 1.24.5
 
 require (
 	firebase.google.com/go/v4 v4.17.0
