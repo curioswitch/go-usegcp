@@ -15,17 +15,13 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - macos-13
-          - macos-14
-          - ubuntu-22.04
-          - windows-2022
+          - macos-15
+          - ubuntu-24.04
+          - windows-2025
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
-        with:
-          go-version-file: go.work
-          cache-dependency-path: "**/go.sum"
+      - uses: curioswitch/go-build/.github/actions/setup-go@79416935201e1767bdfcee289d6eab268d397c02 # v0.5.0
 
       - name: run lints
         # We don't have OS-specific code so would be completely repetitive to run

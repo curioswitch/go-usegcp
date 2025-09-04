@@ -9,8 +9,9 @@
     "recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
   },
   "settings": {
-    "editor.tabSize": 2,
-    "eslint.workingDirectories": [{ "mode": "auto" }],
+    "files.associations": {
+      "renovate*.json": "jsonc"
+    },
     "go.lintFlags": ["--fix"],
     "go.lintTool": "golangci-lint-v2",
     "gopls": {
@@ -18,8 +19,6 @@
     },
     "prettier.configPath": ".prettierrc.yml",
     "prettier.requireConfig": true,
-    "jest.jestCommandLine": "yarn run test",
-    "jest.runMode": { "type": "on-demand", "deferred": true },
     "[json]": {
       "editor.formatOnSave": true,
       "editor.defaultFormatter": "esbenp.prettier-vscode"
