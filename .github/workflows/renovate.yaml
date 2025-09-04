@@ -1,0 +1,15 @@
+name: Renovate Dependencies
+
+on:
+  schedule:
+    # https://crontab.guru/#5_12_*_*_1
+    - cron: "5 12 * * 1"
+  workflow_dispatch:
+
+jobs:
+  sync:
+    uses: curioswitch/go-build/.github/workflows/export-renovate.yaml@79416935201e1767bdfcee289d6eab268d397c02 # v0.5.0
+    with:
+      github_app_id: "1047503"
+    secrets:
+      github_app_key: ${{ secrets.CURIOSWITCH_APP_KEY }}
