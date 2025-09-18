@@ -7,7 +7,7 @@ require (
 	github.com/felixge/httpsnoop v1.0.4
 	github.com/stretchr/testify v1.11.1
 	go.opentelemetry.io/otel/trace v1.38.0
-	golang.org/x/oauth2 v0.30.0
+	golang.org/x/oauth2 v0.31.0
 )
 
 require (
