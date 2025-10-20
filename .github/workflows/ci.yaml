@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - uses: curioswitch/go-build/.github/actions/setup-go@b4bb86391b1e39db0dd8cad98e4d8be49c298077 # v0.6.1
+      - uses: curioswitch/go-build/.github/actions/setup-go@43d89fa5a241b51ac68f94cb38b12f7e92704b93 # v0.6.2
 
       - name: run lints
         # We don't have OS-specific code so would be completely repetitive to run
