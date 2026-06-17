@@ -4,7 +4,7 @@ go 1.25.0
 
 require (
 	firebase.google.com/go/v4 v4.20.0
-	github.com/felixge/httpsnoop v1.0.4
+	github.com/felixge/httpsnoop v1.1.0
 	github.com/stretchr/testify v1.11.1
 	go.opentelemetry.io/otel/trace v1.44.0
 	golang.org/x/oauth2 v0.36.0
