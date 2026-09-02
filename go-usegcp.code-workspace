@@ -2,34 +2,34 @@
   "folders": [
     {
       "name": "/",
-      "path": "."
-    }
+      "path": ".",
+    },
   ],
   "extensions": {
-    "recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
+    "recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"],
   },
   "settings": {
     "files.associations": {
-      "renovate*.json": "jsonc"
+      "renovate*.json": "jsonc",
     },
     "go.lintFlags": ["--fix"],
     "go.lintTool": "golangci-lint-v2",
     "gopls": {
-      "formatting.gofumpt": true
+      "formatting.gofumpt": true,
     },
     "prettier.configPath": ".prettierrc.yml",
     "prettier.requireConfig": true,
     "[json]": {
       "editor.formatOnSave": true,
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
     },
     "[jsonc]": {
       "editor.formatOnSave": true,
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
     },
     "[yaml]": {
       "editor.formatOnSave": true,
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
-  }
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+  },
 }
