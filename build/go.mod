@@ -3,7 +3,7 @@ module build
 go 1.25.0
 
 require (
-	github.com/curioswitch/go-build v0.7.4
+	github.com/curioswitch/go-build v0.9.0
 	github.com/goyek/x v0.4.0
 )
 
@@ -13,5 +13,5 @@ require (
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-shellwords v1.0.12 // indirect
-	golang.org/x/sys v0.44.0 // indirect
+	golang.org/x/sys v0.45.0 // indirect
 )
