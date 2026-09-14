@@ -1,13 +1,13 @@
 module github.com/curioswitch/go-usegcp
 
-go 1.25.0
+go 1.26.0
 
 require (
 	firebase.google.com/go/v4 v4.21.0
 	github.com/felixge/httpsnoop v1.1.0
 	github.com/stretchr/testify v1.12.1
 	go.opentelemetry.io/otel/trace v1.46.0
-	golang.org/x/oauth2 v0.36.0
+	golang.org/x/oauth2 v0.37.0
 )
 
 require (
